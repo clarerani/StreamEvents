@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use App\Models\Follower;
+use App\Models\User;
 class FollowersTableSeeder extends Seeder
 {
     /**
@@ -15,12 +16,17 @@ class FollowersTableSeeder extends Seeder
     {
         
         $faker = \Faker\Factory::create();
-        foreach (range(1, 300) as $index) {
-            DB::table('followers')->insert([
-                'name' => $faker->userName,
-                'created_at' => $faker->dateTimeBetween('-3 months', 'now'),
-                'updated_at' => now(),
-            ]);
+        $users = User::all(); // Assuming you have users already created
+
+        foreach ($users as $user) {
+            foreach (range(1, 300) as $index) {
+                Follower::create([
+                    'user_id' => $user->id,
+                    'name' => $faker->userName,
+                    'created_at' => $faker->dateTimeBetween('-3 months', 'now'),
+                    'updated_at' => now(),
+                ]);
+            }
         }
     }
 }
