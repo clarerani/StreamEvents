@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('oauth-login');
 });
+
+
+
+Route::get('/auth/github',  [AuthController::class, 'redirectToGithub']);
+Route::get('/auth/github/callback', [AuthController::class, 'handleGithubCallback']);
+
+Route::get('/dashboard', function () {
+     return view('dashboard');
+});
+
+Route::get('/logout', [AuthController::class,'logout']);
+
