@@ -18,7 +18,14 @@ class AuthController extends Controller
 
 public function handleGithubCallback()
 {
-    $githubUser = Socialite::driver('github')->user();
+    try {
+        $githubUser = Socialite::driver('github')->user();
+    } catch (\Exception $e) {
+        // Handle error if user denied access or other issues
+        return redirect('/'); // Redirect back to login page or display an error message
+    }
+    
+    // print_r($githubUser); exit;
 
     // Check if the user already exists in your database based on their GitHub ID
     $user = User::where('github_id', $githubUser->getId())->first();
